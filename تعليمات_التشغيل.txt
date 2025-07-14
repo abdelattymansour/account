@@ -1,0 +1,13 @@
+متطلبات التشغيل:
+1. Python 3.10+
+2. Django 4.2+
+
+خطوات التشغيل:
+1. فك ضغط المشروع
+2. فتح terminal في مجلد المشروع
+3. تنفيذ: pip install -r requirements.txt
+4. تنفيذ: py manage.py runserver
+
+بيانات الدخول:
+- اسم المستخدم: admin2
+- كلمة المرور: 1234

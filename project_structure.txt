@@ -1,0 +1,18 @@
+# هيكل المشروع المقترح
+
+├── README.md
+├── run_scripts/
+│   ├── RUN_ALTERNATIVE.bat
+│   └── RUN_PROD.bat
+├── src/
+│   ├── backend/
+│   │   ├── models.py
+│   │   └── requirements.txt
+│   └── frontend/
+│       ├── expenses.js
+│       └── index.html
+├── data/
+│   ├── inputs/
+│   └── outputs/
+└── docs/
+    └── specifications.md

@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قائمة المنتجات - نظام المحاسب</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">نظام المحاسب</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/">الرئيسية</a>
+                <a class="nav-link" href="/products/">المنتجات</a>
+                <a class="nav-link" href="/accounts/logout/">تسجيل الخروج</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1>قائمة المنتجات</h1>
+                    <a href="/products/create/" class="btn btn-primary">إضافة منتج جديد</a>
+                </div>
+
+                <!-- فلاتر البحث -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <form method="get" class="row g-3">
+                            <div class="col-md-4">
+                                <input type="text" name="search" class="form-control" placeholder="البحث..." value="{{ search_query }}">
+                            </div>
+                            <div class="col-md-3">
+                                <select name="category" class="form-control">
+                                    <option value="">جميع الفئات</option>
+                                    {% for category in categories %}
+                                        <option value="{{ category.id }}" {% if category.id|stringformat:"s" == category_filter %}selected{% endif %}>
+                                            {{ category.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select name="stock_status" class="form-control">
+                                    <option value="">جميع حالات المخزون</option>
+                                    <option value="low" {% if stock_filter == 'low' %}selected{% endif %}>مخزون منخفض</option>
+                                    <option value="out" {% if stock_filter == 'out' %}selected{% endif %}>نفد المخزون</option>
+                                    <option value="excess" {% if stock_filter == 'excess' %}selected{% endif %}>مخزون زائد</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-secondary w-100">بحث</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- قائمة المنتجات -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>الاسم</th>
+                                        <th>الكود</th>
+                                        <th>الفئة</th>
+                                        <th>المخزون</th>
+                                        <th>الحالة</th>
+                                        <th>سعر البيع</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for product in products %}
+                                    <tr>
+                                        <td>
+                                            <a href="/products/{{ product.id }}/" class="text-decoration-none">
+                                                {{ product.name }}
+                                            </a>
+                                        </td>
+                                        <td>{{ product.code }}</td>
+                                        <td>{{ product.category.name }}</td>
+                                        <td>{{ product.current_stock }} {{ product.unit.symbol }}</td>
+                                        <td>
+                                            {% if product.stock_status == 'نفد المخزون' %}
+                                                <span class="badge bg-danger">{{ product.stock_status }}</span>
+                                            {% elif product.stock_status == 'مخزون منخفض' %}
+                                                <span class="badge bg-warning">{{ product.stock_status }}</span>
+                                            {% elif product.stock_status == 'مخزون زائد' %}
+                                                <span class="badge bg-info">{{ product.stock_status }}</span>
+                                            {% else %}
+                                                <span class="badge bg-success">{{ product.stock_status }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ product.selling_price }} ريال</td>
+                                        <td>
+                                            <a href="/products/{{ product.id }}/" class="btn btn-sm btn-outline-primary">عرض</a>
+                                            <a href="/products/{{ product.id }}/edit/" class="btn btn-sm btn-outline-secondary">تعديل</a>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="7" class="text-center">لا توجد منتجات</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- التصفح -->
+                        {% if products.has_other_pages %}
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                {% if products.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ products.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}">السابق</a>
+                                    </li>
+                                {% endif %}
+                                
+                                <li class="page-item active">
+                                    <span class="page-link">{{ products.number }} من {{ products.paginator.num_pages }}</span>
+                                </li>
+                                
+                                {% if products.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ products.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}">التالي</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

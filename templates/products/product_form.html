@@ -1,0 +1,95 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header"><h3>{{ title }}</h3></div>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <label>اسم المنتج *</label>
+                    {{ form.name }}
+                </div>
+                <div class="col-md-3">
+                    <label>كود المنتج *</label>
+                    {{ form.code }}
+                </div>
+                <div class="col-md-3">
+                    <label>الباركود</label>
+                    {{ form.barcode }}
+                </div>
+            </div>
+            
+            <div class="row mt-3">
+                <div class="col-md-4">
+                    <label>الفئة *</label>
+                    {{ form.category }}
+                </div>
+                <div class="col-md-4">
+                    <label>الوحدة *</label>
+                    {{ form.unit }}
+                </div>
+                <div class="col-md-4">
+                    <label>نوع المنتج *</label>
+                    {{ form.product_type }}
+                </div>
+            </div>
+            
+            <div class="row mt-3">
+                <div class="col-md-8">
+                    <label>الوصف</label>
+                    {{ form.description }}
+                </div>
+                <div class="col-md-4">
+                    <label>صورة المنتج</label>
+                    {{ form.image }}
+                </div>
+            </div>
+            
+            <div class="row mt-3">
+                <div class="col-md-4">
+                    <label>سعر التكلفة *</label>
+                    {{ form.cost_price }}
+                </div>
+                <div class="col-md-4">
+                    <label>سعر البيع *</label>
+                    {{ form.selling_price }}
+                </div>
+                <div class="col-md-4">
+                    <label>أقل سعر بيع</label>
+                    {{ form.min_selling_price }}
+                </div>
+            </div>
+            
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <label>الحد الأدنى للمخزون</label>
+                    {{ form.min_stock }}
+                </div>
+                <div class="col-md-6">
+                    <label>الحد الأقصى للمخزون</label>
+                    {{ form.max_stock }}
+                </div>
+            </div>
+            
+            <div class="row mt-3">
+                <div class="col-md-4">
+                    {{ form.track_stock }} تتبع المخزون
+                </div>
+                <div class="col-md-4">
+                    {{ form.allow_negative_stock }} السماح بالمخزون السالب
+                </div>
+                <div class="col-md-4">
+                    {{ form.is_active }} نشط
+                </div>
+            </div>
+            
+            <hr class="mt-4">
+            <button type="submit" class="btn btn-primary">حفظ</button>
+            <a href="{% url 'products:product_list' %}" class="btn btn-secondary">إلغاء</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

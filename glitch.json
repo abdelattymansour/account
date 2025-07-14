@@ -1,0 +1,7 @@
+{
+  "install": "npm install",
+  "start": "node backend/server.js",
+  "watch": {
+    "ignore": ["frontend/build"]
+  }
+}
